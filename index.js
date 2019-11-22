@@ -50,13 +50,13 @@ app.post('/appointment', function(req, res, next) {
 //	request(options, function (error, response, body) {
 //		console.log( 'startDateTime: ' + JSON.parse(response.body).datetime);
 //		console.log( 'endDateTime: ' + JSON.parse(response.body).datetime);
-
+		var idparam = Math.floor(Math.random() * 100);
 		data = {
-			id: '1', 
+			id: idparam, 
 			href: "", 
 			externalId: "", 
 			category: "", 
-			description: "Appointment 1", 
+			description: "Appointment " + idparam, 
 			status: "initialized",
 			creationDate: new Date(),
 			lastUpdate: new Date(),
@@ -66,7 +66,7 @@ app.post('/appointment', function(req, res, next) {
 			schemaLocation: ""
 		};
 		
-		appointment.update({id: '1'}, data, {upsert: true}, function (err){
+		appointment.updateOne({id: idparam}, data, {upsert: true}, function (err){
 		  if (err) throw err;
 		  res.sendStatus(200);
 		  //res.json(data);
@@ -95,7 +95,7 @@ app.get('/appointment/appointment/:id', function(req,res, next){
 
 app.delete('/appointment/appointment/:id', function(req,res, next){
 	console.log('Appointment deleted');
-	appointment.remove({id: req.params.id}, function (err, data) { 
+	appointment.deleteOne({id: req.params.id}, function (err, data) { 
     if (err) throw err;
     res.sendStatus(204);
   })
@@ -103,7 +103,7 @@ app.delete('/appointment/appointment/:id', function(req,res, next){
 
 app.patch('/appointment/appointment/:id', function(req,res, next){
 	console.log('Appointment patched');
-	appointment.update({id: req.params.id}, {status: 'cancelled'}, {upsert: true}, function (err){
+	appointment.updateOne({id: req.params.id}, {status: 'cancelled'}, {upsert: true}, function (err){
 		if (err) throw err;
 		res.sendStatus(200);
 		//res.json(data);

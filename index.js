@@ -29,8 +29,8 @@ mongoose.connect(connstring, {useNewUrlParser: true}, function (error) {
     console.log(error);
   }
   else {
-    app.listen(3006, () => {
-      console.log('listening on 3006')
+    app.listen(8080, () => {
+      console.log('listening on 8080')
     })
   }
 });

@@ -5,6 +5,8 @@ const express = require('express'),
   cookieParser = require('cookie-parser'),
   path = require("path"),
   mongoose = require('mongoose'),
+  swaggerUi = require('swagger-ui-express'),
+  swaggerDocument = require('./swagger.json'),
   appointment = require('./models/appointment');
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -13,6 +15,8 @@ app.use(express.static('public'));
 
 app.use(cookieParser());
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 const user = process.env.USER,
 	pass = process.env.PASS,
 	ip = process.env.IP,
@@ -20,7 +24,7 @@ const user = process.env.USER,
 	database = process.env.DATABASE,
 	connstring = 'mongodb://' + user + ':' + pass + '@' + ip + ':' + port + '/' + database;
 
-mongoose.connect(connstring, function (error) {
+mongoose.connect(connstring, {useNewUrlParser: true}, function (error) {
   if (error) {
     console.log(error);
   }

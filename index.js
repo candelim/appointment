@@ -68,8 +68,8 @@ app.post('/appointment', function(req, res, next) {
 		
 		appointment.updateOne({id: idparam}, data, {upsert: true}, function (err){
 		  if (err) throw err;
-		  res.sendStatus(200);
-		  //res.json(data);
+		  //res.sendStatus(200);
+		  res.json(data);
 		});
 		
 //	});
@@ -85,7 +85,7 @@ app.get('/appointment', function(req, res, next) {
 });
 
 
-app.get('/appointment/appointment/:id', function(req,res, next){
+app.get('/appointment/:id', function(req,res, next){
 	console.log('Appointment Get');
 	appointment.find({id: req.params.id}, function (err, data) { 
 		if (err) throw err;
@@ -93,7 +93,7 @@ app.get('/appointment/appointment/:id', function(req,res, next){
   })
 });
 
-app.delete('/appointment/appointment/:id', function(req,res, next){
+app.delete('/appointment/:id', function(req,res, next){
 	console.log('Appointment deleted');
 	appointment.deleteOne({id: req.params.id}, function (err, data) { 
     if (err) throw err;
@@ -101,7 +101,7 @@ app.delete('/appointment/appointment/:id', function(req,res, next){
   })
 });
 
-app.patch('/appointment/appointment/:id', function(req,res, next){
+app.patch('/appointment/:id', function(req,res, next){
 	console.log('Appointment patched');
 	appointment.updateOne({id: req.params.id}, {status: 'cancelled'}, {upsert: true}, function (err){
 		if (err) throw err;

@@ -68,16 +68,7 @@
         }
       }
     },
-    "/appointment/appointment/{id}": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "description": "ID of appointment that we want to find",
-          "type": "string"
-        }
-      ],
+    "/appointment/{id}": {
       "get": {
         "tags": [
           "Appointment"
@@ -98,7 +89,7 @@
           "Appointment"
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Appointment deleted",
             "schema": {
               "$ref": "#/definitions/Appointment"

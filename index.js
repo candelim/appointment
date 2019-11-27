@@ -109,3 +109,8 @@ app.patch('/appointment/:id', function(req,res, next){
 		//res.json(data);
 	});
 });
+
+app.get('/health', function(req,res, next){
+	console.log('Service Status OK');
+	res.sendStatus(200);
+});

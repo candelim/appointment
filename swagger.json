@@ -33,14 +33,6 @@
         ],
 		"summary": "Create a new appointment in system",
         "description": "Create new appointment",
-        "parameters": [
-          {
-            "description": "Appointment that we want to create",
-            "schema": {
-              "$ref": "#/definitions/Appointment"
-            }
-          }
-        ],
         "produces": [
           "application/json"
         ],
@@ -74,6 +66,16 @@
           "Appointment"
         ],
         "summary": "Get appointment with given ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Appointment to get",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Appointment Get",
@@ -85,6 +87,16 @@
       },
       "delete": {
         "summary": "Delete appointment with given ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Appointment to delete",
+            "schema": {
+              "$ref": "#/definitions/Appointment"
+            }
+          }
+        ],
         "tags": [
           "Appointment"
         ],
@@ -99,9 +111,6 @@
       },
       "patch": {
         "summary": "Update appointment with give ID",
-        "tags": [
-          "Appointment"
-        ],
         "parameters": [
           {
             "name": "id",
@@ -111,6 +120,9 @@
               "$ref": "#/definitions/Appointment"
             }
           }
+        ],
+        "tags": [
+          "Appointment"
         ],
         "responses": {
           "200": {

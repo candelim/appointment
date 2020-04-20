@@ -22,11 +22,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const secret = config.db.SECRET,
 	ip = process.env.IP,
-	port = process.env.PORT,
 	database = process.env.DATABASE,
 	connstring = 'mongodb://' + secret + '@' + ip + '/' + database;
-
-console.log(connstring);
 
 mongoose.connect(connstring, {useNewUrlParser: true}, function (error) {
   if (error) {

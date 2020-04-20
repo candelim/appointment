@@ -24,7 +24,7 @@ const secret = config.db.SECRET,
 	ip = process.env.IP,
 	port = process.env.PORT,
 	database = process.env.DATABASE,
-	connstring = 'mongodb://' + secret + '@' + ip + ':' + port + '/' + database;
+	connstring = 'mongodb://' + secret + '@' + ip + '/' + database;
 
 console.log(connstring);
 

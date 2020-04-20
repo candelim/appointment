@@ -9,6 +9,9 @@ const express = require('express'),
   swaggerDocument = require('./swagger.json'),
   appointment = require('./models/appointment');
 
+const propPath = process.env.PROPPATH;
+const config = require(propPath);
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -17,12 +20,11 @@ app.use(cookieParser());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-const user = process.env.USER,
-	pass = process.env.PASS,
+const secret = config.db.SECRET,
 	ip = process.env.IP,
 	port = process.env.PORT,
 	database = process.env.DATABASE,
-	connstring = 'mongodb://' + user + ':' + pass + '@' + ip + ':' + port + '/' + database;
+	connstring = 'mongodb://' + secret + '@' + ip + ':' + port + '/' + database;
 
 mongoose.connect(connstring, {useNewUrlParser: true}, function (error) {
   if (error) {

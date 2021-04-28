@@ -5,7 +5,6 @@ const express = require('express'),
   cookieParser = require('cookie-parser'),
   path = require("path"),
   mongoose = require('mongoose'),
-  moment = require('moment'),
   swaggerUi = require('swagger-ui-express'),
   swaggerDocument = require('./swagger.json'),
   appointment = require('./models/appointment');
@@ -52,7 +51,7 @@ app.post('/appointment', function(req, res, next) {
 	request(options, function (error, response, body) {
 		console.log( 'startDateTime: ' + response.body);
 		console.log( 'endDateTime: ' + response.body);
-		validDate =  moment().format(response.body);
+		validDate =  response.body;
 		console.log(validDate);
 		var idparam = Math.floor(Math.random() * 100);
 		data = {
@@ -64,7 +63,7 @@ app.post('/appointment', function(req, res, next) {
 			status: "initialized",
 			creationDate: new Date(),
 			lastUpdate: new Date(),
-			validFor: { startDateTime: new Date(validDate), endDateTime: new Date(validDate)},
+			validFor: { startDateTime: new Date(), endDateTime: new Date()},
 			baseType: "",
 			type: "",
 			schemaLocation: ""

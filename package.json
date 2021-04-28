@@ -15,7 +15,6 @@
     "mongoose": "^5.7.12",
     "request": "^2.81.0",
     "swagger-ui-express": "4.1.2",
-    "cookie-parser": "1.4.4",
-    "moment": "2.29.1"
+    "cookie-parser": "1.4.4"
   }
 }

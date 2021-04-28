@@ -61,7 +61,7 @@ app.post('/appointment', function(req, res, next) {
 			status: "initialized",
 			creationDate: new Date(),
 			lastUpdate: new Date(),
-			validFor: { startDateTime: new Date(year, month, day), endDateTime: new Date(year, month, day+7)},
+			validFor: { startDateTime: new Date(response.body), endDateTime: new Date(response.body)},
 			baseType: "",
 			type: "",
 			schemaLocation: ""

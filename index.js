@@ -52,7 +52,7 @@ app.post('/appointment', function(req, res, next) {
 		console.log( 'startDateTime: ' + response.body);
 		console.log( 'endDateTime: ' + response.body);
 		validDate = new Date(response.body);
-		console.log(validDate);
+		console.log(response);
 		var idparam = Math.floor(Math.random() * 100);
 		data = {
 			id: idparam, 

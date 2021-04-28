@@ -39,12 +39,12 @@ mongoose.connect(connstring, {useNewUrlParser: true}, function (error) {
 
 app.post('/appointment', function(req, res, next) {
 	console.log('Appointment created');
-	var year = 2019,
-	month = 11,
-	day = 15;
+//	var year = 2019,
+//	month = 11,
+//	day = 15;
 
 	var options = {
-          url: 'http://random-dates-alfa-project.apps.ocp4.labs.semperti.local/availableDates',
+          url: process.env.DATEURL,
 	  method: 'GET',
 	};
 

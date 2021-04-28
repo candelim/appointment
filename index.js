@@ -9,8 +9,8 @@ const express = require('express'),
   swaggerDocument = require('./swagger.json'),
   appointment = require('./models/appointment');
 
-const propPath = process.env.PROPPATH;
-const config = require(propPath);
+//const propPath = process.env.PROPPATH;
+//const config = require(propPath);
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -20,7 +20,7 @@ app.use(cookieParser());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-const secret = config.db.SECRET,
+const secret = process.env.USER + ":" + process.env.PASS,
 	ip = process.env.IP,
 	database = process.env.DATABASE,
 	connstring = 'mongodb://' + secret + '@' + ip + '/' + database;
@@ -42,15 +42,15 @@ app.post('/appointment', function(req, res, next) {
 	var year = 2019,
 	month = 11,
 	day = 15;
-	
-//	var options = {
-//      url: 'http://worldtimeapi.org/api/timezone/America/Argentina/Buenos_Aires',
-//	  method: 'GET',
-//	};
-		
-//	request(options, function (error, response, body) {
-//		console.log( 'startDateTime: ' + JSON.parse(response.body).datetime);
-//		console.log( 'endDateTime: ' + JSON.parse(response.body).datetime);
+
+	var options = {
+          url: 'http://random-dates-alfa-project.apps.ocp4.labs.semperti.local/availableDates',
+	  method: 'GET',
+	};
+
+	request(options, function (error, response, body) {
+		console.log( 'startDateTime: ' + response.body);
+		console.log( 'endDateTime: ' + response.body);
 		var idparam = Math.floor(Math.random() * 100);
 		data = {
 			id: idparam, 
@@ -66,14 +66,14 @@ app.post('/appointment', function(req, res, next) {
 			type: "",
 			schemaLocation: ""
 		};
-		
+
 		appointment.updateOne({id: idparam}, data, {upsert: true}, function (err){
 		  if (err) throw err;
 		  //res.sendStatus(200);
 		  res.json(data);
 		});
-		
-//	});
+
+	});
 });
 
 app.get('/appointment', function(req, res, next) {

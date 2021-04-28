@@ -51,8 +51,8 @@ app.post('/appointment', function(req, res, next) {
 	request(options, function (error, response, body) {
 		console.log( 'startDateTime: ' + response.body);
 		console.log( 'endDateTime: ' + response.body);
-		validDate = new Date(response.body);
-		console.log(response);
+		validDate = response.body.replace('"','').replace('"','');
+		console.log(validDate);
 		var idparam = Math.floor(Math.random() * 100);
 		data = {
 			id: idparam, 
@@ -63,7 +63,7 @@ app.post('/appointment', function(req, res, next) {
 			status: "initialized",
 			creationDate: new Date(),
 			lastUpdate: new Date(),
-			validFor: { startDateTime: validDate, endDateTime: validDate},
+			validFor: { startDateTime: new Date(validDate), endDateTime: new Date(validDate+7)},
 			baseType: "",
 			type: "",
 			schemaLocation: ""

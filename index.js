@@ -53,19 +53,18 @@ const secret = process.env.USER + ":" + process.env.PASS,
 mongoose.connect(connstring, {useNewUrlParser: true}, function (error) {
   if (error) {
     //console.log(error);
+		/*
 		logger.log({
 			message: 'Error de conexión a mongodb',
 			level: 'error'
 		});
+		*/
+		logger.error('Error de conexión a mongodb')
   }
   else {
     app.listen(8080, () => {
       //console.log('listening on 8080')
-			logger.log({
-				message: 'listening on 8080',
-				level: 'info'
-			});
-			logger.info('This is sent to Splunk');
+			logger.info('listening on 8080');
     })
   }
 });
@@ -73,10 +72,7 @@ mongoose.connect(connstring, {useNewUrlParser: true}, function (error) {
 
 app.post('/appointment', function(req, res, next) {
 //console.log('Appointment created');
-	logger.log({
-		message: 'Appointment created',
-		level: 'info'
-	});
+	logger.info('Appointment created');
 //	var year = 2019,
 //	month = 11,
 //	day = 15;
@@ -115,10 +111,7 @@ app.post('/appointment', function(req, res, next) {
 
 app.get('/appointment', function(req, res, next) {
   //console.log('Appointment Get');
-	logger.log({
-		message: 'Appointment Get',
-		level: 'info'
-	});
+	logger.info('Appointment Get');
   appointment.find({}, function (err, data) { 
     if (err) throw err;
     res.json(data);
@@ -129,10 +122,7 @@ app.get('/appointment', function(req, res, next) {
 
 app.get('/appointment/:id', function(req,res, next){
 	//console.log('Appointment Get');
-	logger.log({
-		message: 'Appointment Get ID',
-		level: 'info'
-	});
+	logger.info('Appointment Get');
 
 	appointment.find({id: req.params.id}, function (err, data) { 
 		if (err) throw err;
@@ -142,10 +132,7 @@ app.get('/appointment/:id', function(req,res, next){
 
 app.delete('/appointment/:id', function(req,res, next){
 	//console.log('Appointment deleted');
-	logger.log({
-		message: 'Appointment Deleted',
-		level: 'info'
-	});
+	logger.info('Appointment deleted');
 
 	appointment.deleteOne({id: req.params.id}, function (err, data) { 
     if (err) throw err;
@@ -155,10 +142,7 @@ app.delete('/appointment/:id', function(req,res, next){
 
 app.patch('/appointment/:id', function(req,res, next){
 	//console.log('Appointment patched');
-	logger.log({
-		message: 'Appointment Patched',
-		level: 'info'
-	});
+	logger.info('Appointment patched');
 
 	appointment.updateOne({id: req.params.id}, {status: 'cancelled'}, {upsert: true}, function (err){
 		if (err) throw err;
@@ -169,10 +153,7 @@ app.patch('/appointment/:id', function(req,res, next){
 
 app.get('/health', function(req,res, next){
 	//console.log('Service Status OK');
-	logger.log({
-		message: 'Service Status OK',
-		level: 'info'
-	});
+	logger.info('Service Status OK');
 
 	res.sendStatus(200);
 });

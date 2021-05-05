@@ -15,7 +15,9 @@ const express = require('express'),
 var splunkSettings = {
 	host: process.env.SPLUNK_HOST,
 	token: process.env.SPLUNK_TOKEN,
-	port: process.env.SPLUNK_PORT
+	port: process.env.SPLUNK_PORT,
+	path: process.env.SPLUNK_PATH,
+	protocol: process.env.SPLUNK_PROTOCOL
 };
 
 const logConfiguration = {

@@ -16,6 +16,7 @@
     "request": "^2.81.0",
     "swagger-ui-express": "4.1.2",
     "cookie-parser": "1.4.4",
-    "winston": "3.3.3"
+    "winston": "3.3.3",
+    "winston-splunk-httplogger": "2.3.3"
   }
 }

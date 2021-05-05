@@ -8,17 +8,21 @@ const express = require('express'),
   swaggerUi = require('swagger-ui-express'),
   swaggerDocument = require('./swagger.json'),
   appointment = require('./models/appointment'),
-  winston = require('winston');
-
-// Logger configuration
-	const logConfiguration = {
-		'transports': [
-			new winston.transports.Console()
-		]
-	};
+  winston = require('winston'),
+	SplunkStreamEvent = require('winston-splunk-httplogger');
 
 // Create the logger
-const logger = winston.createLogger(logConfiguration);
+var splunkSettings = {
+	host: 'splunk-standalone-standalone-headless-splunk.apps.ocp.sandbox1583.opentlc.com',
+	token: '4bb68a36-cdde-4b81-bd32-48ef385bd4aa'
+};
+
+var logger = new winston.Logger({
+	transports: [
+			//new winston.transports.Console(),
+			new SplunkStreamEvent({ splunk: splunkSettings })
+	]
+});
 
 //const propPath = process.env.PROPPATH;
 //const config = require(propPath);

@@ -13,7 +13,7 @@ const express = require('express'),
 
 // Create the logger
 var splunkSettings = {
-	host: 'splunk-standalone-standalone-headless-splunk.apps.ocp.sandbox1583.opentlc.com',
+	host: process.env.SPLUNKHOST,
 	token: process.env.TOKEN
 };
 

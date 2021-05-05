@@ -3,7 +3,7 @@ const express = require('express'),
   request = require('request'),
   bodyParser= require('body-parser'),
   cookieParser = require('cookie-parser'),
-  path = require("path"),
+//  path = require("path"),
   mongoose = require('mongoose'),
   swaggerUi = require('swagger-ui-express'),
   swaggerDocument = require('./swagger.json'),
@@ -14,16 +14,17 @@ const express = require('express'),
 // Create the logger
 var splunkSettings = {
 	host: 'splunk-standalone-standalone-headless-splunk.apps.ocp.sandbox1583.opentlc.com',
-	token: '4bb68a36-cdde-4b81-bd32-48ef385bd4aa'
+	token: process.env.TOKEN
 };
 
-var logger = new winston.Logger({
+const logConfiguration = {
 	transports: [
-			//new winston.transports.Console(),
-			new SplunkStreamEvent({ splunk: splunkSettings })
+		new winston.transports.Console(),
+		new SplunkStreamEvent({ splunk: splunkSettings })		
 	]
-});
+};
 
+const logger = winston.createLogger(logConfiguration);
 //const propPath = process.env.PROPPATH;
 //const config = require(propPath);
 

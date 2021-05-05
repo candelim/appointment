@@ -55,7 +55,11 @@ mongoose.connect(connstring, {useNewUrlParser: true}, function (error) {
   else {
     app.listen(8080, () => {
       //console.log('listening on 8080')
-			logger.log({event: 'listening on 8080'});
+			logger.log({
+				message: 'listening on 8080',
+				level: 'info'
+			});
+			logger.info('This is sent to Splunk');
     })
   }
 });

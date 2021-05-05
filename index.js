@@ -20,6 +20,7 @@ var splunkSettings = {
 	protocol: process.env.SPLUNK_PROTOCOL
 };
 
+/*
 const logConfiguration = {
 	transports: [
 		new winston.transports.Console(),
@@ -28,6 +29,15 @@ const logConfiguration = {
 };
 
 const logger = winston.createLogger(logConfiguration);
+*/
+
+var logger = new winston.Logger({
+	transports: [
+			new winston.transports.Console(),
+			new SplunkStreamEvent({ splunk: splunkSettings })
+	]
+});
+
 //const propPath = process.env.PROPPATH;
 //const config = require(propPath);
 

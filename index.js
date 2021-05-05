@@ -7,7 +7,18 @@ const express = require('express'),
   mongoose = require('mongoose'),
   swaggerUi = require('swagger-ui-express'),
   swaggerDocument = require('./swagger.json'),
-  appointment = require('./models/appointment');
+  appointment = require('./models/appointment'),
+  winston = require('winston');
+
+// Logger configuration
+	const logConfiguration = {
+		'transports': [
+			new winston.transports.Console()
+		]
+	};
+
+// Create the logger
+const logger = winston.createLogger(logConfiguration);
 
 //const propPath = process.env.PROPPATH;
 //const config = require(propPath);
@@ -27,18 +38,30 @@ const secret = process.env.USER + ":" + process.env.PASS,
 
 mongoose.connect(connstring, {useNewUrlParser: true}, function (error) {
   if (error) {
-    console.log(error);
+    //console.log(error);
+		logger.log({
+			message: 'Error de conexión a mongodb',
+			level: 'error'
+		});
   }
   else {
     app.listen(8080, () => {
-      console.log('listening on 8080')
+      //console.log('listening on 8080')
+			logger.log({
+				message: 'listening on 8080',
+				level: 'info'
+			});
     })
   }
 });
 
 
 app.post('/appointment', function(req, res, next) {
-	console.log('Appointment created');
+//console.log('Appointment created');
+	logger.log({
+		message: 'Appointment created',
+		level: 'info'
+	});
 //	var year = 2019,
 //	month = 11,
 //	day = 15;
@@ -49,10 +72,7 @@ app.post('/appointment', function(req, res, next) {
 	};
 
 	request(options, function (error, response, body) {
-		console.log( 'startDateTime: ' + response.body);
-		console.log( 'endDateTime: ' + response.body);
 		validDate = response.body.replace('"','').replace('"','');
-		console.log(validDate);
 		var idparam = Math.floor(Math.random() * 100);
 		data = {
 			id: idparam, 
@@ -79,7 +99,11 @@ app.post('/appointment', function(req, res, next) {
 });
 
 app.get('/appointment', function(req, res, next) {
-  console.log('Appointment Get');
+  //console.log('Appointment Get');
+	logger.log({
+		message: 'Appointment Get',
+		level: 'info'
+	});
   appointment.find({}, function (err, data) { 
     if (err) throw err;
     res.json(data);
@@ -89,7 +113,12 @@ app.get('/appointment', function(req, res, next) {
 
 
 app.get('/appointment/:id', function(req,res, next){
-	console.log('Appointment Get');
+	//console.log('Appointment Get');
+	logger.log({
+		message: 'Appointment Get ID',
+		level: 'info'
+	});
+
 	appointment.find({id: req.params.id}, function (err, data) { 
 		if (err) throw err;
 		res.json(data);
@@ -97,7 +126,12 @@ app.get('/appointment/:id', function(req,res, next){
 });
 
 app.delete('/appointment/:id', function(req,res, next){
-	console.log('Appointment deleted');
+	//console.log('Appointment deleted');
+	logger.log({
+		message: 'Appointment Deleted',
+		level: 'info'
+	});
+
 	appointment.deleteOne({id: req.params.id}, function (err, data) { 
     if (err) throw err;
     res.sendStatus(204);
@@ -105,7 +139,12 @@ app.delete('/appointment/:id', function(req,res, next){
 });
 
 app.patch('/appointment/:id', function(req,res, next){
-	console.log('Appointment patched');
+	//console.log('Appointment patched');
+	logger.log({
+		message: 'Appointment Patched',
+		level: 'info'
+	});
+
 	appointment.updateOne({id: req.params.id}, {status: 'cancelled'}, {upsert: true}, function (err){
 		if (err) throw err;
 		res.sendStatus(200);
@@ -114,6 +153,11 @@ app.patch('/appointment/:id', function(req,res, next){
 });
 
 app.get('/health', function(req,res, next){
-	console.log('Service Status OK');
+	//console.log('Service Status OK');
+	logger.log({
+		message: 'Service Status OK',
+		level: 'info'
+	});
+
 	res.sendStatus(200);
 });

@@ -18,13 +18,15 @@ exports.insert = function (mess,topicName) {
 
 	producer.on('ready', function () {
 		producer.send(payloads, function (err, data) {
-			console.log(data);
+			//console.log(data);
+			logger.info(data);
 			producer.close();
 		});
 	});
 
 	producer.on('error', function (err) {
-		console.log('Error');
+		//console.log('Error');
+		logger.info('Error en conexión a Kafka');
 		producer.close();
 	});
 

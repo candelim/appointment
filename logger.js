@@ -19,7 +19,7 @@ const winston = require('winston'),
     level: process.env.LEVEL,
     transports: [
       new winston.transports.Console(),
-      new SplunkStreamEvent({ splunk: splunkSettings })		
+      new SplunkStreamEvent({ splunk: splunkSettings, level: process.env.LEVEL })		
     ]
   };
 

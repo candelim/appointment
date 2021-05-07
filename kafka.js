@@ -1,5 +1,7 @@
 exports.insert = function (mess,topicName) {
 	
+	const logger = require('./logger.js');
+
 	const kafka = require('kafka-node'),
 		Producer = kafka.Producer,
 		KeyedMessage = kafka.KeyedMessage,
@@ -19,14 +21,14 @@ exports.insert = function (mess,topicName) {
 	producer.on('ready', function () {
 		producer.send(payloads, function (err, data) {
 			//console.log(data);
-			logger.info(data);
+			logger.write(data, 'info');
 			producer.close();
 		});
 	});
 
 	producer.on('error', function (err) {
 		//console.log('Error');
-		logger.info('Error en conexión a Kafka');
+		logger.write('Error en conexión a Kafka','error');
 		producer.close();
 	});
 

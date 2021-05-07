@@ -8,35 +8,11 @@ const express = require('express'),
   swaggerUi = require('swagger-ui-express'),
   swaggerDocument = require('./swagger.json'),
   appointment = require('./models/appointment'),
-  winston = require('winston'),
-	SplunkStreamEvent = require('winston-splunk-httplogger'),
-	kafka = require('./kafka.js');
-
-// Create the logger
-var splunkSettings = {
-	host: process.env.SPLUNK_HOST,
-	token: process.env.SPLUNK_TOKEN,
-	port: process.env.SPLUNK_PORT,
-	path: process.env.SPLUNK_PATH,
-	protocol: process.env.SPLUNK_PROTOCOL,
-	level: process.env.LEVEL,
-	source: process.env.SOURCE,
-	sourcetype: process.env.SOURCETYPE,
-	index: process.env.INDEX
-};
-
-const logConfiguration = {
-	transports: [
-		new winston.transports.Console(),
-		new SplunkStreamEvent({ splunk: splunkSettings })		
-	]
-};
-
-const logger = winston.createLogger(logConfiguration);
-
+	kafka = require('./kafka.js'),
+	logger = require('./logger.js');
 //const propPath = process.env.PROPPATH;
 //const config = require(propPath);
-const topicName = process.env.TOPICNAME;
+	topicName = process.env.TOPICNAME;
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -53,30 +29,18 @@ const secret = process.env.USER + ":" + process.env.PASS,
 
 mongoose.connect(connstring, {useNewUrlParser: true}, function (error) {
   if (error) {
-    //console.log(error);
-		/*
-		logger.log({
-			message: 'Error de conexión a mongodb',
-			level: 'error'
-		});
-		*/
-		logger.error('Error de conexión a mongodb')
+		logger.write('Error de conexión a mongodb', 'error')
   }
   else {
     app.listen(8080, () => {
-      //console.log('listening on 8080')
-			logger.info('listening on 8080');
+			logger.write('listening on 8080','info');
     })
   }
 });
 
 
 app.post('/appointment', function(req, res, next) {
-//console.log('Appointment created');
-	logger.info('Appointment created');
-//	var year = 2019,
-//	month = 11,
-//	day = 15;
+	logger.write('Appointment created','info');
 
 	var options = {
           url: process.env.DATEURL,
@@ -103,7 +67,6 @@ app.post('/appointment', function(req, res, next) {
 
 		appointment.updateOne({id: idparam}, data, {upsert: true}, function (err){
 		  if (err) throw err;
-		  //res.sendStatus(200);
 		  kafka.insert('Apointment: ' + idparam, topicName);
 			res.json(data);
 		});
@@ -112,19 +75,16 @@ app.post('/appointment', function(req, res, next) {
 });
 
 app.get('/appointment', function(req, res, next) {
-  //console.log('Appointment Get');
-	logger.info('Appointment Get');
+	logger.write('Appointment Get','info');
   appointment.find({}, function (err, data) { 
     if (err) throw err;
     res.json(data);
   })
-  //res.sendStatus(200);
 });
 
 
 app.get('/appointment/:id', function(req,res, next){
-	//console.log('Appointment Get');
-	logger.info('Appointment Get');
+	logger.write('Appointment Get','info');
 
 	appointment.find({id: req.params.id}, function (err, data) { 
 		if (err) throw err;
@@ -133,8 +93,7 @@ app.get('/appointment/:id', function(req,res, next){
 });
 
 app.delete('/appointment/:id', function(req,res, next){
-	//console.log('Appointment deleted');
-	logger.info('Appointment deleted');
+	logger.write('Appointment deleted','info');
 
 	appointment.deleteOne({id: req.params.id}, function (err, data) { 
     if (err) throw err;
@@ -143,19 +102,16 @@ app.delete('/appointment/:id', function(req,res, next){
 });
 
 app.patch('/appointment/:id', function(req,res, next){
-	//console.log('Appointment patched');
-	logger.info('Appointment patched');
+	logger.write('Appointment patched','info');
 
 	appointment.updateOne({id: req.params.id}, {status: 'cancelled'}, {upsert: true}, function (err){
 		if (err) throw err;
 		res.sendStatus(200);
-		//res.json(data);
 	});
 });
 
 app.get('/health', function(req,res, next){
-	//console.log('Service Status OK');
-	logger.info('Service Status OK');
+	logger.write('Service Status OK','info');
 
 	res.sendStatus(200);
 });

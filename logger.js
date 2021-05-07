@@ -10,13 +10,13 @@ const winston = require('winston'),
     port: process.env.SPLUNK_PORT,
     path: process.env.SPLUNK_PATH,
     protocol: process.env.SPLUNK_PROTOCOL,
-    level: process.env.LEVEL,
     source: process.env.SOURCE,
     sourcetype: process.env.SOURCETYPE,
     index: process.env.INDEX
   };
 
   const logConfiguration = {
+    level: process.env.LEVEL,
     transports: [
       new winston.transports.Console(),
       new SplunkStreamEvent({ splunk: splunkSettings })		

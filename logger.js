@@ -1,7 +1,7 @@
 exports.write = function (mess, loglevel) {
 
 const winston = require('winston'),
-	SplunkStreamEvent = require('winston-splunk-httplogger'),
+	SplunkStreamEvent = require('winston-splunk-httplogger');
 
 // Create the logger
   var splunkSettings = {

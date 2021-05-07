@@ -9,7 +9,8 @@ const express = require('express'),
   swaggerDocument = require('./swagger.json'),
   appointment = require('./models/appointment'),
   winston = require('winston'),
-	SplunkStreamEvent = require('winston-splunk-httplogger');
+	SplunkStreamEvent = require('winston-splunk-httplogger'),
+	kafka = require('./kafka.js');
 
 // Create the logger
 var splunkSettings = {
@@ -24,7 +25,6 @@ var splunkSettings = {
 	index: process.env.INDEX
 };
 
-
 const logConfiguration = {
 	transports: [
 		new winston.transports.Console(),
@@ -36,6 +36,7 @@ const logger = winston.createLogger(logConfiguration);
 
 //const propPath = process.env.PROPPATH;
 //const config = require(propPath);
+const topicName = process.env.TOPICNAME;
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -103,7 +104,8 @@ app.post('/appointment', function(req, res, next) {
 		appointment.updateOne({id: idparam}, data, {upsert: true}, function (err){
 		  if (err) throw err;
 		  //res.sendStatus(200);
-		  res.json(data);
+		  kafka.insert('Apointment: ' + idparam, topicName);
+			res.json(data);
 		});
 
 	});
